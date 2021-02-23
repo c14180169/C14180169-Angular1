@@ -6,13 +6,11 @@ import { Component, VERSION } from '@angular/core';
   styleUrls: [ './app.component.css' ]
 })
 export class AppComponent  {
-  name = 'Angular ' + VERSION.major;
   turn = 1;
   player = '0';
-  win = false;
   instruction = "GAME TURN -> ";
   instruction1 = "PLAYER TURN -> ";
-  instruction3 = "PLAYER " + this.player + " WIN";
+  instruction3 = "";
   instruction4 = "";
 
   board = [
@@ -36,18 +34,19 @@ export class AppComponent  {
   }
 
   pickAnswer(){
+    this.instruction4 = "";
     if(this.input1 != "" && this.input2 != ""){
-      var temp1 = +this.input1;
-      var temp2 = +this.input2;
-      if(this.board[temp1][temp2] != '*'){
-         this.instruction4 = "COORDINATE OCCUPIED";
+      var temp1 = +this.input1 - 1;
+      var temp2 = +this.input2 - 1;
+
+      if(temp1 > 5 || temp2 > 5){
+        this.instruction4 = "INPUT FIELD CANT MORE THAN 5 OR LESS THAN 0";
       }
-      else if(temp1 > 5 || temp2 > 5){
-        this.instruction4 = "INPUT FIELD CANT MORE THAN 5";
+      else if(this.board[temp1][temp2] != '*'){
+         this.instruction4 = "COORDINATE OCCUPIED";
       }
       else{
         this.board[temp1][temp2] = this.player;
-        
 
         this.checkWin();
         this.turn++;
@@ -56,7 +55,7 @@ export class AppComponent  {
       
       this.input1 = "";
       this.input2 = "";
-      this.instruction4 = "";
+
     }
     else {
       this.instruction4 = "INPUT FIELD STILL EMPTY...";
@@ -86,9 +85,30 @@ export class AppComponent  {
         }
       }
       if(score0 == 4 || score1 == 4 || score00 == 4 || score11 == 4){
-        this.win = true;
+        this.instruction3 = "PLAYER " + this.player + " WIN , GAME RESET IN 5 SECONDS";
+        setTimeout(()=>{this.resetGame()},5000);
       }
     }
+  }
+
+  resetGame(){
+    this.turn = 1;
+    this.player = '0';
+    this.instruction = "GAME TURN -> ";
+    this.instruction1 = "PLAYER TURN -> ";
+    this.instruction3 = "PLAYER " + this.player + " WIN";
+    this.instruction4 = "";
+
+    this.board = [
+      ['*', '*', '*', '*', '*'],
+      ['*', '*', '*', '*', '*'],
+      ['*', '*', '*', '*', '*'],
+      ['*', '*', '*', '*', '*'],
+      ['*', '*', '*', '*', '*']
+    ];
+
+    this.input1 = "";
+    this.input2 = "";
   }
 
   
