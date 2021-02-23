@@ -6,6 +6,8 @@
 <br>
 <p>{{instruction}}{{turn}}</p>
 <p>{{instruction1}}{{player}}</p>
+<p *ngIf="win">{{instruction3}}</p>
+<p>{{instruction4}}</p>
 <br>
 
 <input type ="text" [(ngModel)]="input1"/> , <input type ="text" [(ngModel)]="input2"/>
